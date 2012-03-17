@@ -23,6 +23,8 @@ cd streamvise/$MODULENAME
 sudo cp $MODULENAME.yang /usr/share/yuma/modules/$MODULENAME.yang
 sudo cp $MODULENAME.yang /usr/share/yuma/modules/netconfcentral/$MODULENAME.yang
 cd $MODULENAME
+cp ../../cit-helper/cit-helper.h src/cit-helper.h
+cp ../../cit-helper/libcit-helper.so lib/libcit-helper.so
 make clean
 make
 sudo make install
