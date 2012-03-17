@@ -1,5 +1,5 @@
-#ifndef MINE_H_
-#define MINE_H_
+#ifndef CITHELPER_H_
+#define CITHELPER_H_
 int myprint(int toprint);
 
 int runsystem(char* cmd);

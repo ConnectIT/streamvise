@@ -1,0 +1,68 @@
+module cit-ifconfig {
+
+    namespace "http://netconfcentral.org/ns/cit-ifconfig";
+
+    prefix "cit-if";
+
+    import ietf-inet-types { prefix inet; }
+    import ietf-yang-types { prefix yang; }
+
+    organization  "ConnectIT";
+
+    contact "Chris Mavrakis <sec@cmavrakis.com>.";
+
+    description 
+      "Basic interfaces configuration";
+
+
+
+    revision 2012-02-14 {
+        description  
+	  "Added MAC-address, cleaned-up code.";
+    }
+
+    revision 2011-11-22 {
+        description  
+	  "Initial version.";
+    }
+
+    container ifconfig {
+      description
+        "Container for all interfaces information.";
+ 
+      list interface {
+         key name;
+
+         leaf name {
+           description "Interface name string";
+           type string;
+         }
+
+	  leaf up {
+	    description "Brings the interface up";
+	    type boolean;
+	    default true;
+	  }
+
+	  leaf mtu {
+	    description "Set the MTU size";
+	    type uint32;
+	    default 1500;
+	  }
+
+	  leaf ip-address {
+	    type inet:ip-address;
+	  }
+
+	  leaf subnet-mask {
+	    type inet:ip-address;
+	  }
+
+	  leaf mac-address {
+	    type yang:phys-address;
+	  }
+
+         } //leaf interface ends here
+      } //container ifconfig ends here
+   
+} //module ends here
