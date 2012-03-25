@@ -1,0 +1,33 @@
+module cit-system {
+
+    namespace "http://netconfcentral.org/ns/cit-system";
+
+    prefix "cit-sys";
+
+    import ietf-inet-types { prefix inet; }
+    import ietf-yang-types { prefix yang; }
+
+    organization  "ConnectIT";
+
+    contact "Chris Mavrakis <sec@cmavrakis.com>.";
+
+    description 
+      "Basic system configuration";
+
+
+    revision 2012-03-25 {
+        description  
+	  "Initial version.";
+    }
+
+    container system {
+      description
+        "Container for all system functions.";
+
+      leaf reboot {
+        description "Whether to reboot the system on commit";
+        type boolean;
+        default false;
+      }
+    }
+}
