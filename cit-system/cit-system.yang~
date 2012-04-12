@@ -27,7 +27,7 @@ module cit-system {
       "Reboots the system";
     }
 
-    rpc get-live-conn {
+    rpc system-live-conn {
       description
       "Lists active connections.";
     }
