@@ -38,7 +38,7 @@ char *readsetting(char *filename, char *setting, char *delimiter){
 	printf("Looking for string %s in file %s\n", setting, filename);
 	FILE *file;
 	FILE *filetmp;
-        size_t len = 10;
+        size_t len = 0;
 	char *line = NULL;
 	char *ret = "Setting not found";
 
