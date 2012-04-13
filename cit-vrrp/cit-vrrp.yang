@@ -1,0 +1,60 @@
+module cit-vrrp {
+
+    namespace "http://netconfcentral.org/ns/cit-vrrp";
+
+    prefix "cit-vrrp";
+
+    import ietf-inet-types { prefix inet; }
+
+    organization  "ConnectIT";
+
+    contact "Chris Mavrakis <sec@cmavrakis.com>.";
+
+    description 
+      "VRRPd configuration";
+
+
+    revision 2012-04-13 {
+        description  
+	  "Initial version.";
+    }
+
+    container vrrp {
+      description
+        "Container for all vrrp settings.";
+ 
+      list rule {
+        key entryno;
+
+        leaf entryno {
+          type uint32;
+          mandatory true;
+          description "Entry number";
+        }
+
+        leaf interface {
+          type string;
+          default "eth0";
+          description "Interface name string";
+        }
+
+        leaf vrid {
+          type uint32;
+          default "1";
+          description "The id of the virtual server (range: 1-255)";
+        }
+
+        leaf priority {
+          type uint32;
+          default 100;
+          description "Priority of the host in the virtual server (default: 100)";
+        }
+
+        leaf ip-address {
+          type inet:ip-address;
+          mandatory true;
+          description "The ip address of the virtual server";
+        }
+      }
+    }
+}
