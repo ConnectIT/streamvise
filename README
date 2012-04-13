@@ -1,31 +1,41 @@
 Open-source router operating system with stream manipulation and redundancy capabilities.
 
+The OS will use NETCONF implementation "Yuma". For the moment, the only things in this repository will be some custom NETCONF modules developed by us.
+
 More info will be filled-in soon.
 
 Project folders:
 - cit-helper: a small library to hold custom functions used by other modules
 - cit-ifconfig: YANG/Yuma module that implements basic network interface configuration
+- cit-system: YANG/Yuma module that provides system reboot functionality and live connection view.
+
+INSTALLING:
 
 To compile the external C library (cit-helper) run in a terminal:
-cd streamvise/cit-helper
-gcc -c cit-helper.c
-gcc -o libcit-helper.so cit-helper.o --share
-(on a 64-bit system add "-fPIC" to the first command)
-sudo cp libcit-helper.so /usr/lib/yuma/libcit-helper.so
+$ cd streamvise/cit-helper
+$ gcc -c cit-helper.c
+(on a 64-bit system add "-fPIC" to the above command)
+$ gcc -o libcit-helper.so cit-helper.o --share
+#cp libcit-helper.so /usr/lib/yuma/libcit-helper.so
 
 export LD_LIBRARY_PATH=/usr/lib/yuma
 
 
 
-To compile the cit-ifconfig module run in a terminal:
-MODULENAME=cit-ifconfig
-cd streamvise/$MODULENAME
-sudo cp $MODULENAME.yang /usr/share/yuma/modules/$MODULENAME.yang
-sudo cp $MODULENAME.yang /usr/share/yuma/modules/netconfcentral/$MODULENAME.yang
-cd $MODULENAME
-cp ../../cit-helper/cit-helper.h src/cit-helper.h
-cp ../../cit-helper/libcit-helper.so lib/libcit-helper.so
-make clean
-make
-sudo make install
-netconfd --module $MODULENAME &
+To compile the cit-ifconfig or cit-system modules run in a terminal:
+$ MODULENAME=cit-ifconfig or 
+$ MODULENAME=cit-system
+
+and then:
+$ cd streamvise/$MODULENAME
+# cp $MODULENAME.yang /usr/share/yuma/modules/$MODULENAME.yang
+# cp $MODULENAME.yang /usr/share/yuma/modules/netconfcentral/$MODULENAME.yang
+$ cd $MODULENAME
+$ cp ../../cit-helper/cit-helper.h src/cit-helper.h
+$ cp ../../cit-helper/libcit-helper.so lib/libcit-helper.so
+$ make clean
+$ make
+# make install
+$ netconfd --module $MODULENAME &
+
+

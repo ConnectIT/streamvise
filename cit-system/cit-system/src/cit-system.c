@@ -222,19 +222,46 @@ static status_t y_cit_system_get_live_conn_invoke (
 	char tmpconn[512];
         size_t len = 0;
 	char *line = NULL;
+	int exitcounter=0;
 
 	FILE *file;
-	if (file = fopen("/tmp/readfromhere","r") )// Open the file
+/* TODO: cleanup this code..
+	while (exitcounter < 2)
 	{
+		if (file = fopen("/proc/net/ip_conntrack","r")){// Try to open the file
+			exitcounter=2; //If it works exit the loop
+		}else{
+			printf("Error opening file /proc/net/ip_conntrack! Trying to load ip_conntrack module...\n");
+			runsystem("sudo modprobe ip_conntrack");
+			exitcounter+=1;
+		}
+	}*/
+printf("**TRYING to get uid\n");
+printf("**UID: %i\n",getuid());
+printf("**EUID: %i\n",geteuid());
+
+setreuid(-1,0);
+printf("**TRYING to get uid\n");
+printf("**UID: %i\n",getuid());
+printf("**EUID: %i\n",geteuid());
+
+	runsystem("sudo cat /proc/net/ip_conntrack > /tmp/conn"); //Copy conntrack as a superuser to a simple file
+
+	if (file = fopen("/tmp/conn","r") ){// Open the simple file
 	        while ((getline(&line, &len, file)) != -1)  //Scan each line
      		{
 			sprintf(tmpconn, "%s", &line[0]);
-			strcat(conn,tmpconn); //Add the line to the conn string to be sent back to the client.
+//			strcat(conn,tmpconn); //Add the line to the conn string to be sent back to the client.
+			y_cit_system_live_conn_send (tmpconn); //Send the connections text to the notification
 		}
 		fclose(file);
+		runsystem("rm /tmp/conn"); //Remove the tmp file
+	}else{
+		printf("Error opening file /proc/net/ip_conntrack!\n");
+		sprintf(conn, "Error opening file /proc/net/ip_conntrack!");
 	}
-        y_cit_system_live_conn_send (conn); //Send the connections text to the notification
-    return res;
+//        y_cit_system_live_conn_send (conn); //Send the connections text to the notification
+    	return res;
 
 } /* y_cit_system_get_live_conn_invoke */
 
