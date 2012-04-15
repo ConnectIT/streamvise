@@ -8,6 +8,7 @@ Project folders:
 - cit-helper: a small library to hold custom functions used by other modules
 - cit-ifconfig: YANG/Yuma module that implements basic network interface configuration
 - cit-system: YANG/Yuma module that provides system reboot functionality and live connection view.
+- cit-vrrp: YANG/Yuma module that configures and starts VRRPd.
 
 INSTALLING:
 
@@ -22,9 +23,11 @@ export LD_LIBRARY_PATH=/usr/lib/yuma
 
 
 
-To compile the cit-ifconfig or cit-system modules run in a terminal:
+To compile the cit-ifconfig, cit-system or cit-vrrp modules run in a terminal:
 $ MODULENAME=cit-ifconfig or 
-$ MODULENAME=cit-system
+$ MODULENAME=cit-system or
+$ MODULENAME=cit-vrrp
+
 
 and then:
 $ cd streamvise/$MODULENAME
