@@ -38,55 +38,50 @@ char *readsetting(char *filename, char *setting, char *delimiter){
 	printf("Looking for string %s in file %s\n", setting, filename);
 	FILE *file;
 	FILE *filetmp;
-        size_t len = 0;
+  size_t len = 0;
 	char *line = NULL;
 	char *ret = "Setting not found";
 
 	if (filetmp = fopen("/tmp/filetmp","w"))
-	if (file = fopen(filename,"r") )// Open the file
-	{
-	        while ((getline(&line, &len, file)) != -1) 
-     		{
-// maybe tmp should be defined as char *tmp[1] ???
-			char tmp[1];				
-			sprintf(tmp, "%.*s\n", 1, &line[0]);
+	  if (file = fopen(filename,"r") ) {  //Open the file
+	    while ((getline(&line, &len, file)) != -1) { //Cycle through the lines
+        
+			  char tmp[1]; // TODO: maybe tmp should be defined as char *tmp[1] ???
+			  sprintf(tmp, "%.*s\n", 1, &line[0]);
 
-			//Now do 2 checks:
-			//1. First character of line is not "#", so this is not a comment line
-			//2. Try to find the string we're looking for. If not null, we found it successfully.
-			if (strstr(tmp, "#") == NULL && strstr(line, setting) != NULL){ 
-				fprintf(filetmp, "%s", line);
-				strtok(line, delimiter);
-				ret = strdup(strtok(NULL , delimiter));
-
-			}else{ //This is not the line we were looking for. Rewrite it just to move the fprintf pointer.
-				fprintf(filetmp, "%s", line);
-			}			
-      		}
-		fclose(file);
-		fclose(filetmp);
-		move_file("/tmp/filetmp", filename);
-		return ret;
-	}
-	else{
-		printf("Error opening file %s!\n", filename);
-		return "fail";
-	}
-
-
+			  //Now do 2 checks:
+			  //1. First character of line is not "#", so this is not a comment line
+			  //2. Try to find the string we're looking for. If not null, we found it successfully.
+			  if (strstr(tmp, "#") == NULL && strstr(line, setting) != NULL){ //This is our line!
+				  fprintf(filetmp, "%s", line); //Save it
+				  strtok(line, delimiter);
+				  ret = strdup(strtok(NULL , delimiter));
+			  }else{ //This is not the line we were looking for. Rewrite it just to move the fprintf pointer.
+				  fprintf(filetmp, "%s", line);
+			  }			
+      }
+		  fclose(file);
+		  fclose(filetmp);
+		  move_file("/tmp/filetmp", filename);
+		  return ret;
+	  }
+	  else{
+		  printf("Error opening file %s!\n", filename);
+		  return "fail";
+	  }
 }
 
 
 
 int writesetting(char *filename, char *setting, char *towrite, char *delimiter){
 
-//     	char line[128]; //Will hold one line of the conf file
+//  char line[128]; //Will hold one line of the conf file
 //	char filename[] = "/tmp/dhcpconf"; //Which file to open
 
 	printf("Will write string %s in file %s, as setting %s\n", towrite, filename,setting);
 	FILE *file;
 	FILE *filetmp;
-        size_t len = 0;
+  size_t len = 0;
 	char *line = NULL;
 	int found = 0; // NOT found by default
 
@@ -140,10 +135,10 @@ int writesetting(char *filename, char *setting, char *towrite, char *delimiter){
 
 }
 
-move_file(char *src, char *dst){
+move_file(char *src, char *dst){ //Moves a file (source), overwrites if destination file exists
 	FILE *f1,*f2;
 	char ch;
-//	printf("moving from %s to %s\n",src, dst);
+  //printf("moving from %s to %s\n",src, dst);
 
 	f1=fopen(src,"r");
 	if(f1==NULL)
@@ -152,7 +147,7 @@ move_file(char *src, char *dst){
 		f2=fopen(dst,"w");
 		while((ch=getc(f1))!=EOF)
 			putc(ch,f2);
-//		printf("One File moved\n");
+    //printf("One File moved\n");
 		fclose(f2);
 		remove(src);
 	}
@@ -164,13 +159,15 @@ move_file(char *src, char *dst){
 /* PART2 : File-specific wrapper functions
 */
 
+// Funtions for reading and writing UDHCPD settings
+
 int writeudhcpd(char *setting, char *towrite){
-	char file[]="/tmp/udhcpd.conf";
+	char file[]="/tmp/udhcpd.conf"; //UDHCPD configuration file
 	return writesetting(file, setting, towrite, "	");
 }
 
 char *readudhcpd(char *tofind){
-	char file[]="/tmp/udhcpd.conf";
+	char file[]="/tmp/udhcpd.conf"; //UDHCPD configuration file
 	return readsetting(file, tofind, "	");
 }
 
@@ -178,17 +175,16 @@ char *readudhcpd(char *tofind){
 /* PART3 : Test functions
 */
 
-#ifdef NOLIB //If running in debug mode, main function will be compiled.
+#ifdef NOLIB // Main function will be compiled only if we're running in debug mode, using the NOLIB option
 
-int main(){ //Used only for debugging purposes.
+int main(){ //Used only for debugging purposes. Uncomment lines to test functions
+
 //	printf("Main() running!\n");
 //	printf("Reading settings: %s\n", readsetting("/tmp/udhcpd.conf", "field3"));
 
-
-	writeudhcpd("option  dns", "5");
+// Test write setting:
+//	writeudhcpd("option  dns", "5");
 //	printf("FOUND: %s\n", readudhcpd("start"));
-
-
 
 	return 0;
 }
