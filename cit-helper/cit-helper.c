@@ -74,65 +74,66 @@ char *readsetting(char *filename, char *setting, char *delimiter){
 
 
 int writesetting(char *filename, char *setting, char *towrite, char *delimiter){
-
-//  char line[128]; //Will hold one line of the conf file
-//	char filename[] = "/tmp/dhcpconf"; //Which file to open
-
-	printf("Will write string %s in file %s, as setting %s\n", towrite, filename,setting);
+  /* This function writes a setting to a configuration file (*filename input). The setting to 
+  *  be written is *towrite and the setting's name is *setting. The delimiter used
+  *  for each configuration file can be different, so *delimiter input is required.
+  */ 
+  
+	printf("Will write string %s in file %s, as setting %s\n", towrite, filename, setting);
 	FILE *file;
 	FILE *filetmp;
   size_t len = 0;
-	char *line = NULL;
+	char *line = NULL; //Will hold one line of the conf file
 	int found = 0; // NOT found by default
 
-	if (filetmp = fopen("/tmp/filetmp","w"))
-	if (file = fopen(filename,"r") )// Open the file
-	{
-	        while ((getline(&line, &len, file)) != -1) 
-     		{
-// maybe tmp should be defined as char *tmp[1] ???
-			char tmp[1];				
-			sprintf(tmp, "%.*s\n", 1, &line[0]);
+	if (filetmp = fopen("/tmp/filetmp","w")) {
+	  if (file = fopen(filename,"r") ) { // Open the file
+	    while ((getline(&line, &len, file)) != -1) { //Scan through the lines
+        
+			  char tmp[1];	//TODO: maybe tmp should be defined as char *tmp[1] ???			
+			  sprintf(tmp, "%.*s\n", 1, &line[0]); //Save the line to tmp
 
-			//Now do 2 checks:
-			//1. First character of line is not "#", so this is not a comment line
-			//2. Try to find the string we're looking for. If not null, we found it!
-			if (strstr(tmp, "#") == NULL && strstr(line, setting) != NULL){ 
-				//Is this about a dns setting?
-//				if (strstr(setting, "option  dns") != NULL) {
-//				  printf("This is a dns request.");
+			  //Now do 2 checks:
+			  //1. First character of line is not "#", so this is not a comment line
+			  //2. Try to find the string we're looking for. If not null, we found it!
+			  if (strstr(tmp, "#") == NULL && strstr(line, setting) != NULL){ 
+				  //Is this about a dns setting?
+				  
+  /*				TODO: Uncomment the following, in order to enable smart searching and writing
+            
+  
+            if (strstr(setting, "option  dns") != NULL) {
+  				  printf("This is a dns request.");
 					
-//				  strtok(line, delimiter); //Skip the line's first word
-//				  strtok(NULL, delimiter); //Skip the line's second word
-				  //If the third word is the same as the one we would write...
-//				  if (strstr(towrite, strdup(strtok(NULL , delimiter))) != NULL) {
-//				    fprintf(filetmp, "%s", line); //Just rewrite the line
-//				  }else{//Append the line to the file
-//				    fprintf(filetmp, "%s", line); //First rewrite the line
-				    //Then append the new line:
-//				    fprintf(filetmp,"%s%s%s\n", setting, delimiter, towrite);
-//				  }
-//				}else{
-					fprintf(filetmp,"%s%s%s\n", setting, delimiter, towrite);
-//					found = 1;
-//				}
-			}else{ //This is not the line we were looking for. Rewrite it just to move the fprintf pointer.
-				fprintf(filetmp, "%s", line);
-			}			
-      		}
-//		if (found == 0) //If setting has not been found in file, write it
-//			fprintf(filetmp,"%s%s%s\n", setting, delimiter, towrite);
-		fclose(file);
-		fclose(filetmp);
-		move_file("/tmp/filetmp", filename);
-		return 1;
+  				  strtok(line, delimiter); //Skip the line's first word
+  				  strtok(NULL, delimiter); //Skip the line's second word
+				    //If the third word is the same as the one we would write...
+  				  if (strstr(towrite, strdup(strtok(NULL , delimiter))) != NULL) {
+  				    fprintf(filetmp, "%s", line); //Just rewrite the line
+  				  }else{//Append the line to the file
+  				    fprintf(filetmp, "%s", line); //First rewrite the line
+				      //Then append the new line:
+  				    fprintf(filetmp,"%s%s%s\n", setting, delimiter, towrite);
+  				  }
+  */				}else{ //This is not a DNS setting, just write the new value
+					  fprintf(filetmp,"%s%s%s\n", setting, delimiter, towrite);
+  //					found = 1;
+  //				}
+			  }else{ //This is not the line we were looking for. Rewrite it just to move the fprintf pointer.
+				  fprintf(filetmp, "%s", line);
+			  }			
+      }
+  //    if (found == 0) //If setting has not been found in file, write it
+  //			fprintf(filetmp,"%s%s%s\n", setting, delimiter, towrite);
+		  fclose(file);
+		  fclose(filetmp);
+		  move_file("/tmp/filetmp", filename);
+		  return 1;
+	  }else{
+		  printf("Error opening file %s!\n", filename);
+		  return -1;
+	  }
 	}
-	else{
-		printf("Error opening file %s!\n", filename);
-		return -1;
-	}
-
-
 }
 
 move_file(char *src, char *dst){ //Moves a file (source), overwrites if destination file exists
