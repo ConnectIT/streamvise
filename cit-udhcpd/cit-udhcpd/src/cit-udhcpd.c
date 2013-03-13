@@ -1620,6 +1620,7 @@ static status_t
 		// Static leases
 		val_value_t *tmplease; //Will hold the "lease" list
 		char *MAC="FF:FF:FF:FF:FF:FF";
+		char *MAC2="xxxx"; //Local variable
 		char *IP="255.255.255.255";
 		tmpval = val_match_child(newval, "cit-udhcpd", "static-leases"); //Find "static-leases" container in cit-udhpd
 		if (tmpval != NULL){
@@ -1633,7 +1634,6 @@ static status_t
 				tmpchild = val_get_next_child(tmpchild); //Get the IP address leaf
 				IP = VAL_STRING(tmpchild); //Get the IP address 
 				printf("****    IP: %s\n", IP);
-				MAC2 = "xxxx"; //Local variable
 				sprintf(MAC2, "static_lease  %s", MAC); //Incorporate static_lease and MAC in local variable
 	  		writeudhcpd(MAC2, IP); //Write the setting to config file	
 				tmplease = val_get_next_child(tmplease); //Get the next static lease
