@@ -1550,9 +1550,6 @@ static status_t
 		printf("****    No of children: %i\n", val_child_cnt(newval));
 
 		val_value_t *tmpval; //Will hold the data node that we're processing each time
-		FILE *file;
-		if (file = fopen("/tmp/udhcpd.conf","w")); //Open udhcpd config file
-    //TODO: change this to /etc/udhcpd.conf
 
 		// Is the service up or down?
 		tmpval = val_match_child(newval, "cit-udhcpd", "running"); //Find "running" in cit-udhpcd
@@ -1574,19 +1571,19 @@ static status_t
 			char iface[] = "eth11"; //Dummy interface, just used for var init
 			sprintf(iface, "%s", VAL_STRING(tmpval)); //Get the value
 			printf("****    Iface name: %s\n", iface);
-			fprintf(file, "interface  %s\n", iface); //TODO: change
+		  writeudhcpd("interface", iface); //Write the setting to config file	
 		}
 
 		// Subnet mask
 		tmpval = val_match_child(newval, "cit-udhcpd", "subnet-mask"); //Find "subnet-mask" in cit-udhpd
 		if (tmpval != NULL) {		
-			fprintf(file, "option  subnet  %s\n", VAL_STRING(tmpval)); //TODO: change
+			writeudhcpd("option  subnet", VAL_STRING(tmpval)); //Write the setting to config file	
 		}
 
 		// Router IP
 		tmpval = val_match_child(newval, "cit-udhcpd", "router"); //Find "router" in cit-udhpd
 		if (tmpval != NULL) {	
-			fprintf(file, "option  router  %s\n", VAL_STRING(tmpval)); //TODO: change
+			writeudhcpd("option  router", VAL_STRING(tmpval)); //Write the setting to config file	
 		}
 
 
@@ -1601,7 +1598,7 @@ static status_t
 			while (tmpserver != NULL){ //Check if there are still DNS IP addresses!
 				tmpchild = val_get_first_child(tmpserver); //Get the IP address
 				printf("****    DNS: %s\n", VAL_STRING(tmpchild));
-				fprintf(file, "option  dns  %s\n", VAL_STRING(tmpchild)); //TODO: change
+				writeudhcpd("option  dns", VAL_STRING(tmpchild)); //Write the setting to config file	
 				tmpserver = val_get_next_child(tmpserver); //Get the next DNS server
 			}
 
@@ -1610,13 +1607,13 @@ static status_t
 		// Hostname
 		tmpval = val_match_child(newval, "cit-udhcpd", "hostname"); //Find "hostname" in cit-udhpd
 		if (tmpval != NULL) {	
-			fprintf(file, "option  hostname  %s\n", VAL_STRING(tmpval)); //TODO: change
+  		writeudhcpd("option  hostname", VAL_STRING(tmpval)); //Write the setting to config file	
 		}
 
 		// Lease time
 		tmpval = val_match_child(newval, "cit-udhcpd", "lease-time"); //Find "lease-time" in cit-udhpd
 		if (tmpval != NULL) {	
-			fprintf(file, "option  lease  %i\n", VAL_UINT(tmpval)); //TODO: change
+			writeudhcpd("option  lease", VAL_UINT(tmpval)); //Write the setting to config file	
 		}
 
 
@@ -1636,8 +1633,9 @@ static status_t
 				tmpchild = val_get_next_child(tmpchild); //Get the IP address leaf
 				IP = VAL_STRING(tmpchild); //Get the IP address 
 				printf("****    IP: %s\n", IP);
-				fprintf(file, "static_lease  %s  %s\n", MAC, IP); //TODO: change
-
+				MAC2 = "xxxx"; //Local variable
+				sprintf(MAC2, "static_lease  %s", MAC); //Incorporate static_lease and MAC in local variable
+	  		writeudhcpd(MAC2, IP); //Write the setting to config file	
 				tmplease = val_get_next_child(tmplease); //Get the next static lease
 			}
 
@@ -1650,17 +1648,17 @@ static status_t
 			tmpchild = val_get_first_child(tmpval); //Get the first child, AKA start address
 			if (tmpval != NULL) {	
 				printf("****    Start ip: %s\n", VAL_STRING(tmpchild));
-				fprintf(file, "start  %s\n", VAL_STRING(tmpchild)); //TODO: change
+				writeudhcpd("start", VAL_STRING(tmpchild)); //Write the setting to config file	
 			}
 		// End IP
 			tmpchild = val_get_next_child(tmpchild); //Get the next child, AKA end address
 			if (tmpval != NULL) {	
 				printf("****    End ip: %s\n", VAL_STRING(tmpchild));
-				fprintf(file, "end  %s\n", VAL_STRING(tmpchild)); //TODO: change
+				writeudhcpd("end", VAL_STRING(tmpchild)); //Write the setting to config file	
 			}
-		}
 
-	fclose(file);
+
+
 	
 		switch (editop) {
 		case OP_EDITOP_LOAD:
