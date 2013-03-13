@@ -18,7 +18,7 @@ $ cd streamvise/cit-helper
 $ gcc -c cit-helper.c
 (on a 64-bit system add "-fPIC" to the above command)
 $ gcc -o libcit-helper.so cit-helper.o --share
-#cp libcit-helper.so /usr/lib/yuma/libcit-helper.so
+# cp libcit-helper.so /usr/lib/yuma/libcit-helper.so
 
 export LD_LIBRARY_PATH=/usr/lib/yuma
 

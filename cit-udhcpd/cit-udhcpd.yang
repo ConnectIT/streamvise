@@ -1,0 +1,99 @@
+module cit-udhcpd {
+
+    namespace "http://netconfcentral.org/ns/cit-udhcpd";
+
+    prefix "cit-udhcpd";
+
+    import ietf-inet-types { prefix inet; }
+
+
+    organization  "ConnectIT";
+
+    contact "Chris Mavrakis <sec@cmavrakis.com>.";
+
+    description 
+      "Basic interfaces configuration";
+
+
+    revision 2011-12-07 {
+        description  
+	  "Initial version.";
+    }
+
+    container udhcpd {
+      description
+        "Container for all uDHCPd configuration data.";
+ 
+      leaf running {
+        description "Status of the service";
+        type boolean;
+      }
+
+      leaf interface {
+        description "The interface that udhcpd will use";
+        type string;
+      }
+
+      leaf subnet-mask {
+        description "Subnet mask";
+        type inet:ip-address;
+      }
+
+      leaf router {
+        description "IP address of the router";
+        type inet:ip-address;
+      }
+
+      container dns {
+        list server {
+          key ip-address;
+          leaf ip-address {
+            description "IP address of DNS server";
+            type inet:ip-address;
+          }
+        }
+      }
+
+      leaf hostname {
+        description "Hostname";
+        type string;
+      }
+
+      leaf lease-time {
+        description "Lease time in seconds";
+        type uint32;
+      }
+
+      container static-leases {
+        description "Static leases";
+        list lease {
+          key mac;
+	
+          leaf mac {
+            description "MAC address";
+            type string;
+            mandatory true;
+          }
+
+          leaf ip-address {
+            description "IP address";
+            type inet:ip-address;
+            mandatory true;
+          }
+        }
+      }
+
+
+      container range {
+        presence "enables dynamic address assignment";
+        leaf start {
+          type inet:ip-address;
+          mandatory true;
+        }
+        leaf end {
+          type inet:ip-address;
+          mandatory true;
+        }
+      }
+    } //End of udhcpd container
+} //End of module
