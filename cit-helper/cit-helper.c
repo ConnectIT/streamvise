@@ -115,7 +115,8 @@ int writesetting(char *filename, char *setting, char *towrite, char *delimiter){
 				      //Then append the new line:
   				    fprintf(filetmp,"%s%s%s\n", setting, delimiter, towrite);
   				  }
-  */				}else{ //This is not a DNS setting, just write the new value
+  				}else{ //This is not a DNS setting, just write the new value
+*/
 					  fprintf(filetmp,"%s%s%s\n", setting, delimiter, towrite);
   //					found = 1;
   //				}
