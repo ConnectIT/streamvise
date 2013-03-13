@@ -1656,6 +1656,7 @@ static status_t
 				printf("****    End ip: %s\n", VAL_STRING(tmpchild));
 				writeudhcpd("end", VAL_STRING(tmpchild)); //Write the setting to config file	
 			}
+		}
 
 
 
@@ -1681,6 +1682,7 @@ static status_t
 			printf("****    DEFAULT\n");
 		}
 	}
+	
         if (res == NO_ERR) {
             res = agt_check_cache(
                 &udhcpd_val,
