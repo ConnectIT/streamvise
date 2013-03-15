@@ -191,10 +191,11 @@ int main(){ //Used only for debugging purposes. Uncomment lines to test function
 //	printf("Reading settings: %s\n", readsetting("/tmp/udhcpd.conf", "field3"));
 
   //Test write setting:
-	writeudhcpd("option  lease", "4232");
+  printf("Writing to uDHCPd config file...\n");
+	writeudhcpd("option  lease", "4233");
 	
 	//Test reaad setting:
-//	printf("RESULT: %s\n", readudhcpd("option  lease"));
+	printf("Reading from uDHCPd config file...\nResult: %s\n", readudhcpd("option  lease"));
 
 	return 0;
 }

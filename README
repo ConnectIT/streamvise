@@ -43,4 +43,4 @@ $ make
 # make install
 $ netconfd --module $MODULENAME &
 
-
+(If you get an error during making, e.g. "xmlstring.h: No such file or directory" install the appropriate library, libxml2-dev in this case)
