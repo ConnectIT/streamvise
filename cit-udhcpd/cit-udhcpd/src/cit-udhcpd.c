@@ -1613,10 +1613,14 @@ static status_t
 		// Lease time
 		tmpval = val_match_child(newval, "cit-udhcpd", "lease-time"); //Find "lease-time" in cit-udhpd
 		if (tmpval != NULL) {	
-			writeudhcpd("option  lease", VAL_UINT(tmpval)); //Write the setting to config file	
+
+		    char tmpint[]="3200"; //Temporary var to hold the lease time
+
+		    sprintf(tmpint, "%i", VAL_UINT(tmpval)); //Get the lease time
+  			writeudhcpd("option  lease", tmpint); //Write the setting to config file	
 		}
 
-
+/* CAUSES PROBLEMS DUE TO sprintf etc:
 		// Static leases
 		val_value_t *tmplease; //Will hold the "lease" list
 		char *MAC="FF:FF:FF:FF:FF:FF";
@@ -1640,7 +1644,7 @@ static status_t
 			}
 
 		}
-
+*/
 
 		// Start IP
 		tmpval = val_match_child(newval, "cit-udhcpd", "range"); //Find "range" in cit-udhpd

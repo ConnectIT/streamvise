@@ -39,13 +39,13 @@ char *readsetting(char *filename, char *setting, char *delimiter){
 	FILE *file;
 	FILE *filetmp;
   size_t len = 0;
-	char *line = NULL;
+	char *line = NULL; //Will hold one line of the conf file
 	char *ret = "Setting not found";
 
 	if (filetmp = fopen("/tmp/filetmp","w"))
 	  if (file = fopen(filename,"r") ) {  //Open the file
 	    while ((getline(&line, &len, file)) != -1) { //Cycle through the lines
-        
+
 			  char tmp[1]; // TODO: maybe tmp should be defined as char *tmp[1] ???
 			  sprintf(tmp, "%.*s\n", 1, &line[0]);
 
@@ -55,6 +55,7 @@ char *readsetting(char *filename, char *setting, char *delimiter){
 			  if (strstr(tmp, "#") == NULL && strstr(line, setting) != NULL){ //This is our line!
 				  fprintf(filetmp, "%s", line); //Save it
 				  strtok(line, delimiter);
+				  //TODO: the following line creates problems
 				  ret = strdup(strtok(NULL , delimiter));
 			  }else{ //This is not the line we were looking for. Rewrite it just to move the fprintf pointer.
 				  fprintf(filetmp, "%s", line);
@@ -87,9 +88,9 @@ int writesetting(char *filename, char *setting, char *towrite, char *delimiter){
 	int found = 0; // NOT found by default
 
 	if (filetmp = fopen("/tmp/filetmp","w")) {
-	  if (file = fopen(filename,"r") ) { // Open the file
+	  if (file = fopen(filename,"r") ) { // Open the file	
 	    while ((getline(&line, &len, file)) != -1) { //Scan through the lines
-        
+
 			  char tmp[1];	//TODO: maybe tmp should be defined as char *tmp[1] ???			
 			  sprintf(tmp, "%.*s\n", 1, &line[0]); //Save the line to tmp
 
@@ -97,9 +98,10 @@ int writesetting(char *filename, char *setting, char *towrite, char *delimiter){
 			  //1. First character of line is not "#", so this is not a comment line
 			  //2. Try to find the string we're looking for. If not null, we found it!
 			  if (strstr(tmp, "#") == NULL && strstr(line, setting) != NULL){ 
+
 				  //Is this about a dns setting?
-				  
-  /*				TODO: Uncomment the following, in order to enable smart searching and writing
+
+        /*	TODO: Uncomment the following, in order to enable smart searching and writing
             
   
             if (strstr(setting, "option  dns") != NULL) {
@@ -116,7 +118,7 @@ int writesetting(char *filename, char *setting, char *towrite, char *delimiter){
   				    fprintf(filetmp,"%s%s%s\n", setting, delimiter, towrite);
   				  }
   				}else{ //This is not a DNS setting, just write the new value
-*/
+      */
 					  fprintf(filetmp,"%s%s%s\n", setting, delimiter, towrite);
   //					found = 1;
   //				}
@@ -124,17 +126,21 @@ int writesetting(char *filename, char *setting, char *towrite, char *delimiter){
 				  fprintf(filetmp, "%s", line);
 			  }			
       }
+
+
+
   //    if (found == 0) //If setting has not been found in file, write it
   //			fprintf(filetmp,"%s%s%s\n", setting, delimiter, towrite);
 		  fclose(file);
 		  fclose(filetmp);
+printf("Closing files\n");
 		  move_file("/tmp/filetmp", filename);
 		  return 1;
 	  }else{
 		  printf("Error opening file %s!\n", filename);
 		  return -1;
-	  }
-	}
+	  } //End else
+	} //End if
 }
 
 move_file(char *src, char *dst){ //Moves a file (source), overwrites if destination file exists
@@ -165,7 +171,7 @@ move_file(char *src, char *dst){ //Moves a file (source), overwrites if destinat
 
 int writeudhcpd(char *setting, char *towrite){
 	char file[]="/tmp/udhcpd.conf"; //UDHCPD configuration file
-	return writesetting(file, setting, towrite, "	");
+	return writesetting(file, setting, towrite, "	"); //TODO: maybe this delim should be two whitespaces?
 }
 
 char *readudhcpd(char *tofind){
@@ -184,9 +190,11 @@ int main(){ //Used only for debugging purposes. Uncomment lines to test function
 //	printf("Main() running!\n");
 //	printf("Reading settings: %s\n", readsetting("/tmp/udhcpd.conf", "field3"));
 
-// Test write setting:
-//	writeudhcpd("option  dns", "5");
-//	printf("FOUND: %s\n", readudhcpd("start"));
+  //Test write setting:
+	writeudhcpd("option  lease", "4232");
+	
+	//Test reaad setting:
+//	printf("RESULT: %s\n", readudhcpd("option  lease"));
 
 	return 0;
 }
