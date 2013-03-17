@@ -66,7 +66,7 @@ char *readsetting(char *filename, char *setting, char *delimiter){
     while ((getline(&line, &len, file)) != -1) { //Cycle through the lines
 
 		  char tmp[1]; // TODO: maybe tmp should be defined as char *tmp[1] ???
-		  sprintf(tmp, "%.*s\n", 1, &line[0]);
+		  sprintf(tmp, "%.*s\n", 1, &line[0]); //Save the line to a temporary variable
 
 		  //Now do 2 checks:
 		  //1. First character of line is not "#", so this is not a comment line
@@ -115,7 +115,7 @@ int writesetting(char *filename, char *setting, char *towrite, char *delimiter){
 	    while ((getline(&line, &len, file)) != -1) { //Scan through the lines
 
 			  char tmp[100];	//TODO: maybe tmp should be defined as char *tmp[1] ???			
-			  sprintf(tmp, "%.*s\n", 1, &line[0]); //Save the line to tmp
+			  sprintf(tmp, "%.*s\n", 1, &line[0]); //Save the line to a temporary variable
      
 			  //Now do 2 checks:
 			  //1. First character of line is not "#", so this is not a comment line
@@ -126,8 +126,7 @@ int writesetting(char *filename, char *setting, char *towrite, char *delimiter){
 				  //Is this about a dns setting?
 
         /*	TODO: Uncomment the following, in order to enable smart searching and writing
-            
-  
+
             if (strstr(setting, "option  dns") != NULL) {
   				  printf("This is a dns request.");
 					
@@ -157,10 +156,11 @@ int writesetting(char *filename, char *setting, char *towrite, char *delimiter){
   			printf("DBG: Setting not found, writing it\n");
   			foundflag = 0;
   		}
+  		printf("DBG: Closing files\n");
 		  fclose(file);
 		  fclose(filetmp);
-      printf("DBG: Closing files\n");
-		  move_file("/tmp/filetmp", filename);
+
+		  move_file("/tmp/filetmp", filename); //Move the temporary file over the original settings file, overwriting it
 		  return 1;
 	  }else{
 		  printf("Error opening file %s!\n", filename);
@@ -180,8 +180,6 @@ int writesetting(char *filename, char *setting, char *towrite, char *delimiter){
 move_file(char *src, char *dst){ 
 	FILE *f1,*f2;
 	char ch;
-  //printf("moving from %s to %s\n",src, dst);
-
 	f1=fopen(src,"r");
 	if(f1==NULL)
 		printf("Can't open the file");
@@ -189,7 +187,7 @@ move_file(char *src, char *dst){
 		f2=fopen(dst,"w");
 		while((ch=getc(f1))!=EOF)
 			putc(ch,f2);
-    //printf("One File moved\n");
+			
 		fclose(f2);
 		remove(src);
 	}
