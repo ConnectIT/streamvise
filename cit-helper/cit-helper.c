@@ -67,18 +67,15 @@ char *readsetting(char *filename, char *setting, char *delimiter){
 
 			  char tmp[1]; // TODO: maybe tmp should be defined as char *tmp[1] ???
 			  sprintf(tmp, "%.*s\n", 1, &line[0]);
-
+				fprintf(filetmp, "%s", line); //Save the line to the temporary file
 			  //Now do 2 checks:
 			  //1. First character of line is not "#", so this is not a comment line
 			  //2. Try to find the string we're looking for. If not null, we found it successfully.
 			  if (strstr(tmp, "#") == NULL && strstr(line, setting) != NULL){ //This is our line!
-				  fprintf(filetmp, "%s", line); //Save it
 				  strtok(line, delimiter);
 				  //TODO: the following line creates problems
 				  ret = strdup(strtok(NULL , delimiter));
-			  }else{ //This is not the line we were looking for. Rewrite it just to move the fprintf pointer.
-				  fprintf(filetmp, "%s", line);
-			  }			
+			  } //This is not the line we were looking for.	
       }
 		  fclose(file);
 		  fclose(filetmp);
@@ -249,9 +246,10 @@ int main(){
   //Test write setting:
   printf("Writing to uDHCPd config file...\n");
 	writeudhcpd("option  lease", "4230");
-	writeudhcpd("option  subnet", "4.5.5.10");
+	writeudhcpd("option  subnet", "4.5.5.11");
 	//Test read setting:
 	printf("Reading from uDHCPd config file...\nResult: %s\n", readudhcpd("option  lease"));
+  printf("Reading from uDHCPd config file...\nResult: %s\n", readudhcpd("option  subnet"));
   printf("*** Cit-helper Test Function ends here ***\n");
 	return 0;
 }
