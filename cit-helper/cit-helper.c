@@ -61,27 +61,25 @@ char *readsetting(char *filename, char *setting, char *delimiter){
 	char *line = NULL; //Will hold one line of the conf file
 	char *ret = "Setting not found";
 
-	if (filetmp = fopen("/tmp/filetmp","w"))
-	  if (file = fopen(filename,"r") ) {  //Open the file
-	    while ((getline(&line, &len, file)) != -1) { //Cycle through the lines
 
-			  char tmp[1]; // TODO: maybe tmp should be defined as char *tmp[1] ???
-			  sprintf(tmp, "%.*s\n", 1, &line[0]);
-				fprintf(filetmp, "%s", line); //Save the line to the temporary file
-			  //Now do 2 checks:
-			  //1. First character of line is not "#", so this is not a comment line
-			  //2. Try to find the string we're looking for. If not null, we found it successfully.
-			  if (strstr(tmp, "#") == NULL && strstr(line, setting) != NULL){ //This is our line!
-				  strtok(line, delimiter);
-				  //TODO: the following line creates problems
-				  ret = strdup(strtok(NULL , delimiter));
-			  } //This is not the line we were looking for.	
-      }
-		  fclose(file);
-		  fclose(filetmp);
-		  move_file("/tmp/filetmp", filename);
-		  return ret;
-	  }
+  if (file = fopen(filename,"r") ) {  //Open the file
+    while ((getline(&line, &len, file)) != -1) { //Cycle through the lines
+
+		  char tmp[1]; // TODO: maybe tmp should be defined as char *tmp[1] ???
+		  sprintf(tmp, "%.*s\n", 1, &line[0]);
+
+		  //Now do 2 checks:
+		  //1. First character of line is not "#", so this is not a comment line
+		  //2. Try to find the string we're looking for. If not null, we found it successfully.
+		  if (strstr(tmp, "#") == NULL && strstr(line, setting) != NULL){ //This is our line!
+			  strtok(line, delimiter);
+			  //TODO: the following line creates problems
+			  ret = strdup(strtok(NULL , delimiter));
+		  } //This is not the line we were looking for.	
+    }
+	  fclose(file);
+	  return ret;
+  }
 	  else{
 		  printf("Error opening file %s!\n", filename);
 		  return "fail";
