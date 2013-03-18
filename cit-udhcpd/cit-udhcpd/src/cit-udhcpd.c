@@ -94,6 +94,18 @@ static status_t
         break;
     case AGT_CB_COMMIT:
 	{
+		if (newval != NULL) {
+		  char cmd[512];
+		  if (VAL_BOOL(newval)){ //Service should be running
+		    printf("****    true\n"	); //TODO: change
+		    sprintf(cmd, "sudo service udhcpd start");
+		  }else{ //Service should NOT be running
+		    printf("****    false\n"); //TODO: change
+		    sprintf(cmd, "sudo service udhcpd stop");
+		  }
+		  int resultss = runsystem(cmd); //Send command for running
+		}
+
         	switch (editop) {
 	        case OP_EDITOP_LOAD:
 	            break;
@@ -183,12 +195,12 @@ static status_t
         break;
     case AGT_CB_COMMIT:
 	{
-/*  Old code. TODO: Cleanup when all else works
-		char tmp[] = "eth11";
-		sprintf(tmp, "%s", VAL_STRING(newval));
-		writeudhcpd("interface", tmp);		
-*/
-        	switch (editop) {
+		char iface[] = "eth11"; //Dummy interface, just used for var initialization
+		sprintf(iface, "%s", VAL_STRING(newval)); //Get the value
+		printf("****    Iface name: %s\n", iface);
+		writeudhcpd("interface", iface); //Write the setting to config file	
+
+		switch (editop) {
 	        case OP_EDITOP_LOAD:
 	            break;
 	        case OP_EDITOP_MERGE:
@@ -278,8 +290,7 @@ static status_t
         break;
     case AGT_CB_COMMIT:
  	{
-    //    Old code. TODO: Cleanup when all else works
-    //	  writeudhcpd("option  subnet", VAL_STRING(newval));		
+		writeudhcpd("option  subnet", VAL_STRING(newval)); //Write the setting to config file	
 
         	switch (editop) {
 	        case OP_EDITOP_LOAD:
@@ -369,8 +380,7 @@ static status_t
         break;
     case AGT_CB_COMMIT:
  	{
-    //    Old code. TODO: Cleanup when all else works
-    //		writeudhcpd("option  router", VAL_STRING(newval));		
+		writeudhcpd("option  router", VAL_STRING(newval)); //Write the setting to config file	
 
         	switch (editop) {
 	        case OP_EDITOP_LOAD:
@@ -460,8 +470,7 @@ static status_t
         break;
     case AGT_CB_COMMIT:
    	{
-    //    Old code. TODO: Cleanup when all else works
-    //		writeudhcpd("option  dns", VAL_STRING(newval));		
+		writeudhcpd("option  dns", VAL_STRING(newval)); //Write the setting to config file	
 
         	switch (editop) {
 	        case OP_EDITOP_LOAD:
@@ -731,8 +740,7 @@ static status_t
         break;
     case AGT_CB_COMMIT:
 	{
-	  //    Old code. TODO: Cleanup when all else works
-    //		writeudhcpd("option  hostname", VAL_STRING(newval));		
+		writeudhcpd("option  hostname", VAL_STRING(newval)); //Write the setting to config file	
 
         	switch (editop) {
 	        case OP_EDITOP_LOAD:
@@ -822,11 +830,10 @@ static status_t
         break;
     case AGT_CB_COMMIT:
 	{
-    /*  Old code. TODO: Cleanup when all else works
-    		char tmp[32];
-    		sprintf(tmp, "%i", VAL_UINT(newval));
-    		writeudhcpd("option  lease", tmp);		
-    */
+		char tmpint[]="3200"; //Temporary var to hold the lease time
+		sprintf(tmpint, "%i", VAL_UINT(newval)); //Get the lease time
+		writeudhcpd("option  lease", tmpint); //Write the setting to config file	
+
         	switch (editop) {
 	        case OP_EDITOP_LOAD:
 	            break;
@@ -1188,6 +1195,7 @@ static status_t
         break;
     case AGT_CB_COMMIT:
         /* device instrumentation done here */
+	//TODO: copy from generic code below and paste it here. Make this work
         switch (editop) {
         case OP_EDITOP_LOAD:
             break;
@@ -1277,8 +1285,7 @@ static status_t
         break;
     case AGT_CB_COMMIT:
  	{
-   	//    Old code. TODO: Cleanup when all else works
-    //		writeudhcpd("start", VAL_STRING(newval));		
+    		writeudhcpd("start", VAL_STRING(newval)); //Write the setting to config file		
 
         	switch (editop) {
 	        case OP_EDITOP_LOAD:
@@ -1369,8 +1376,7 @@ static status_t
         break;
     case AGT_CB_COMMIT:
 	{
-	  //    Old code. TODO: Cleanup when all else works
-    //		writeudhcpd("end", VAL_INT(newval));		
+		writeudhcpd("end", VAL_STRING(newval)); //Write the setting to config file
 
         	switch (editop) {
 	        case OP_EDITOP_LOAD:
@@ -1547,6 +1553,7 @@ static status_t
         break;
     case AGT_CB_COMMIT:
 	{
+/* DELETE when new code works
 		printf("****    No of children: %i\n", val_child_cnt(newval));
 
 		val_value_t *tmpval; //Will hold the data node that we're processing each time
@@ -1564,6 +1571,7 @@ static status_t
 			}
 			int resultss = runsystem(cmd); //Send command for running
 		}
+
 
 		// Interface name
 		tmpval = val_match_child(newval, "cit-udhcpd", "interface"); //Find "interface" in cit-udhcpd
@@ -1619,6 +1627,7 @@ static status_t
 		    sprintf(tmpint, "%i", VAL_UINT(tmpval)); //Get the lease time
   			writeudhcpd("option  lease", tmpint); //Write the setting to config file	
 		}
+*/
 
 /* CAUSES PROBLEMS DUE TO sprintf etc:
 		// Static leases
@@ -1646,6 +1655,7 @@ static status_t
 		}
 */
 
+/* DELETE when new code works
 		// Start IP
 		tmpval = val_match_child(newval, "cit-udhcpd", "range"); //Find "range" in cit-udhpd
 		if (tmpval != NULL) {	//Something has been found
@@ -1661,7 +1671,7 @@ static status_t
 				writeudhcpd("end", VAL_STRING(tmpchild)); //Write the setting to config file	
 			}
 		}
-
+*/
 
 
 	
