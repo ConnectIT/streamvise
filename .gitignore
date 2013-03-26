@@ -1,5 +1,9 @@
 # Ignore compiled files:
 
+# All .o and .so
+*.o
+*.so
+
 # Cit-helper:
 cit-helper/testcit-helper
 cit-helper/libcit-helper.so

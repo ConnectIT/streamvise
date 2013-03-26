@@ -1,0 +1,324 @@
+module cit-iptables {
+
+    namespace "http://netconfcentral.org/ns/cit-iptables";
+
+    prefix "cit-iptables";
+
+    import ietf-inet-types { prefix inet; }
+
+
+    organization  "ConnectIT";
+
+    contact "Chris Mavrakis <sec@cmavrakis.com>.";
+
+    description 
+      "Iptables configuration";
+
+
+    revision 2012-01-12 {
+        description  
+	  "Initial version.";
+    }
+
+    container iptables {
+      description
+        "Container for all iptables configuration data.";
+
+        list rule {
+          key entryno;
+
+          leaf entryno {
+            description "Entry number";
+            type uint32;
+          }
+
+          container table {
+            leaf table{
+              description "TODO -t";
+              type enumeration {
+                enum "filter" {
+                  value 1;
+                }
+                 enum "nat" {
+                  value 2;
+                }
+                enum "mangle" {
+                  value 3;
+                }
+              }
+              default "filter";  
+            }
+          }
+
+          container appendto {
+            leaf appendto {
+              description "TODO -A";
+              type enumeration {
+                enum "PREROUTING" {
+                  value 1;
+                }
+                enum "INPUT" {
+                  value 2;
+                }
+                enum "FORWARD" {
+                  value 3;
+                }
+                enum "OUTPUT" {
+                  value 4;
+                }
+                enum "POSTROUTING" {
+                  value 5;
+                }
+              }
+              default "INPUT";  
+            }       
+          }
+	  container protocol{
+            leaf protocol {
+              description "TODO -p";
+              type enumeration {
+                enum "tcp" {
+                  value 1;
+                }
+                enum "udp" {
+                  value 2;
+                }
+                enum "icmp" {
+                  value 3;
+                }
+              }
+              default "tcp";         
+            }
+	    leaf not {
+              type boolean;
+              default "false";
+              description "Whether the [!] flag will be used.";
+	    }
+	  }
+
+
+          container source-ip {
+            leaf ip {
+              description "IP address of source (example: 192.168.1.1/32). Corresponds to iptables -s option.";
+              type inet:ipv4-prefix;
+            }
+	    leaf not {
+              type boolean;
+              default "false";
+              description "Whether the [!] flag will be used.";
+	    }
+          }
+
+          container dest-ip {
+            leaf ip {
+              description "IP address of destination (example: 192.168.1.1/32). Corresponds to iptables -d option.";
+              type inet:ipv4-prefix;
+            }
+	    leaf not {
+              type boolean;
+              default "false";
+              description "Whether the [!] flag will be used.";
+	    }
+          }
+
+         container input-interface{
+           leaf interface {
+              description "Input interface. Corresponds to iptables -i option.";
+              type string;
+            }
+	    leaf not {
+              type boolean;
+              default "false";
+              description "Whether the [!] flag will be used.";
+	    }
+         }
+
+         container output-interface{
+           leaf interface {
+              description "Output interface. Corresponds to iptables -o option.";
+              type string;
+            }
+	    leaf not {
+              type boolean;
+              default "false";
+              description "Whether the [!] flag will be used.";
+	    }
+         }
+
+
+         container module {
+           leaf module {
+             description "TODO. Corresponds to iptables -m option.";
+             type enumeration {
+               enum "mark" {
+                 value 1;
+               }
+               enum "state" {
+                 value 2;
+               }
+               enum "connmark" {
+                 value 3;
+               }
+             }
+             default "mark";    
+           }     
+        }
+
+        container mark-options {
+            leaf mark {
+              description "--mark option";
+              type uint32;
+            }
+	    leaf not {
+              type boolean;
+              default "false";
+              description "Whether the [!] flag will be used.";
+	    }
+         }
+
+         container connmark-options {
+           leaf connmark-options {
+              description "TODO. ";
+              type enumeration {
+                enum "save-mark" {
+                  value 1;
+                }
+                enum "restore-mark" {
+                  value 2;
+                }
+              }
+              default "save-mark";   
+            }      
+          }
+
+          container state-options {
+            leaf state {
+              description "--state option for 'state' module. ";
+              type enumeration {
+                enum "INVALID" {
+                  value 1;
+                }
+                enum "ESTABLISHED" {
+                  value 2;
+                }
+                enum "NEW" {
+                  value 3;
+                }
+                enum "RELATED" {
+                  value 4;
+                }
+              }
+              default "INVALID";         
+            }
+	    leaf not {
+              type boolean;
+              default "false";
+              description "Whether the [!] flag will be used.";
+	    }
+          }
+
+          container source-port {
+            leaf port {
+              description "TODO --sport";
+              type uint32;
+            }
+	    leaf not {
+              type boolean;
+              default "false";
+              description "Whether the [!] flag will be used.";
+	    }
+          }
+
+          container destination-port {
+            leaf port {
+              description "TODO --dport";
+              type uint32;
+            }
+	    leaf not {
+              type boolean;
+              default "false";
+              description "Whether the [!] flag will be used.";
+	    }
+          }
+
+          container jump {
+            leaf jump {
+              description
+                "Where to jump if rule matches. Corresponds to iptables -j option.";
+
+              type enumeration {
+                enum "DROP" {
+                  value 1;
+                }
+                enum "ACCEPT" {
+                  value 2;
+                }
+                enum "REJECT" {
+                  value 3;
+                }
+                enum "SNAT" {
+                  value 4;
+                }
+                enum "DNAT" {
+                  value 5;
+                }
+                enum "MARK" {
+                  value 6;
+                }
+                enum "CONNMARK" {
+                  value 7;
+                }
+                enum "MASQUERADE" {
+                  value 8;
+                }
+              }
+              default "ACCEPT";         
+            }
+          }
+
+          leaf set-mark-option {
+            description "--set-mark option for usage with '-j MARK'.";
+            type uint32;
+          }
+
+          container snat-options {
+            leaf ip {
+              description "First IP address in --to-source option of SNAT.";
+              type inet:ip-address;
+            }
+            leaf ip-end {
+              description "Second IP address in --to-source option of SNAT.";
+              type inet:ip-address;
+            }
+            leaf port-start {
+              description "First port in --to-source option of SNAT.";
+              type uint32;
+            }
+            leaf port-end {
+              description "Second port in --to-source option of SNAT.";
+              type uint32;
+            }
+          }
+
+          container dnat-options {
+            leaf ip {
+              description "First IP address in --to-destination option of DNAT.";
+              type inet:ip-address;
+            }
+            leaf ip-end {
+              description "Second IP address in --to-destination option of DNAT.";
+              type inet:ip-address;
+            }
+            leaf port-start {
+              description "First port in --to-destination option of DNAT.";
+              type uint32;
+            }
+            leaf port-end {
+              description "Second port in --to-destination option of DNAT.";
+              type uint32;
+            }
+          }
+        } //End of rule
+
+    } //End of iptables container
+} //End of module
