@@ -14,8 +14,6 @@ module cit-ifconfig {
     description 
       "Basic interfaces configuration";
 
-
-
     revision 2012-02-14 {
         description  
 	  "Added MAC-address, cleaned-up code.";
@@ -38,31 +36,30 @@ module cit-ifconfig {
            type string;
          }
 
-	  leaf up {
-	    description "Brings the interface up";
-	    type boolean;
-	    default true;
-	  }
+	      leaf up {
+	        description "Brings the interface up";
+	        type boolean;
+	        default true;
+	      }
 
-	  leaf mtu {
-	    description "Set the MTU size";
-	    type uint32;
-	    default 1500;
-	  }
+	      leaf mtu {
+	        description "Set the MTU size";
+	        type uint32;
+	        default 1500;
+	      }
 
-	  leaf ip-address {
-	    type inet:ip-address;
-	  }
+	      leaf ip-address {
+	        type inet:ip-address;
+	      }
 
-	  leaf subnet-mask {
-	    type inet:ip-address;
-	  }
+	      leaf subnet-mask {
+	        type inet:ip-address;
+	      }
 
-	  leaf mac-address {
-	    type yang:phys-address;
-	  }
+	      leaf mac-address {
+	        type yang:phys-address;
+	      }
 
-         } //leaf interface ends here
-      } //container ifconfig ends here
-   
+      } //list interface ends here
+    } //container ifconfig ends here
 } //module ends here
