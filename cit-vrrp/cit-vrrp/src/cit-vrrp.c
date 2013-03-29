@@ -483,47 +483,41 @@ static status_t cit_vrrp_vrrp_rule_edit (
         break;
     case AGT_CB_COMMIT:
         {
-		val_value_t *tmpval; //Will hold the data node that we're processing each time
-		char cmd[512]; //The command to be run
-		char tmpcmd[512]; //Var to temporary hold the command
-		strcpy (cmd,"vrrpd "); //The beginning of the command to be run...
+		      val_value_t *tmpval; //Will hold the data node that we're processing each time
+		      char cmd[512]; //The command to be run
+		      char tmpcmd[512]; //Var to temporary hold the command
+		      strcpy (cmd,"vrrpd "); //The beginning of the command to be run
 
-		//Get the interface name
-		tmpval = val_match_child(newval, xmlCharStrdup("cit-vrrp"), xmlCharStrdup("interface")); //Search for element
-		if (tmpval != NULL) {
-			
-			//Get the element value:
-			sprintf(tmpcmd, "-i %s ", VAL_STRING(tmpval));
-		  	strcat(cmd,tmpcmd); //Append the new part to the command
-		}
+		      //Get the interface name
+		      tmpval = val_match_child(newval, xmlCharStrdup("cit-vrrp"), xmlCharStrdup("interface")); //Search for element
+		      if (tmpval != NULL) {
+			      sprintf(tmpcmd, "-i %s ", VAL_STRING(tmpval)); //Get the element value
+		        strcat(cmd,tmpcmd); //Append the new part to the command
+		      }
 
-		//Get vrid
-		tmpval = val_match_child(newval, xmlCharStrdup("cit-vrrp"), xmlCharStrdup("vrid")); //Search for element
-		if (tmpval != NULL) {
-		//Get the element value:
-			sprintf(tmpcmd, "-v %i ", VAL_INT(tmpval));
-		  	strcat(cmd,tmpcmd); //Append the new part to the command
-		}
+		      //Get vrid
+		      tmpval = val_match_child(newval, xmlCharStrdup("cit-vrrp"), xmlCharStrdup("vrid")); //Search for element
+		      if (tmpval != NULL) {
+			      sprintf(tmpcmd, "-v %i ", VAL_INT(tmpval)); //Get the element value
+		        strcat(cmd,tmpcmd); //Append the new part to the command
+		      }
 
-		//Get priority
-		tmpval = val_match_child(newval, xmlCharStrdup("cit-vrrp"), xmlCharStrdup("priority")); //Search for element
-		if (tmpval != NULL) {
-			//Get the element value:
-			sprintf(tmpcmd, "-p %i ", VAL_INT(tmpval));
-		  	strcat(cmd,tmpcmd); //Append the new part to the command
-		}
+		      //Get priority
+		      tmpval = val_match_child(newval, xmlCharStrdup("cit-vrrp"), xmlCharStrdup("priority")); //Search for element
+		      if (tmpval != NULL) { 
+			      sprintf(tmpcmd, "-p %i ", VAL_INT(tmpval)); //Get the element value
+		        strcat(cmd,tmpcmd); //Append the new part to the command
+		      }
 
-		//Get destination IP
-		tmpval = val_match_child(newval, xmlCharStrdup("cit-vrrp"), xmlCharStrdup("ip-address")); //Search for element
-		if (tmpval != NULL) {
-			
-			//Get the element value:
-			sprintf(tmpcmd, "%s ", VAL_STRING(tmpval));
-		  	strcat(cmd,tmpcmd); //Append the new part to the command
-		}
+		      //Get destination IP
+		      tmpval = val_match_child(newval, xmlCharStrdup("cit-vrrp"), xmlCharStrdup("ip-address")); //Search for element
+		      if (tmpval != NULL) {
+			      sprintf(tmpcmd, "%s ", VAL_STRING(tmpval)); //Get the element value
+		        strcat(cmd,tmpcmd); //Append the new part to the command
+		      }
 
-		printf("****    Would run command: %s\n", cmd);
-//		runsystem(cmd); //Send command for running
+		      printf("****    Running command: %s\n", cmd);
+      		runsystem(cmd); //Send command for running
 
 
         	switch (editop) {
