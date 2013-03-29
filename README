@@ -2,7 +2,7 @@ Open-source router operating system with stream manipulation and redundancy capa
 
 The OS will use NETCONF implementation "Yuma". For the moment, the only things in this repository will be some custom NETCONF modules developed by us.
 
-More info will be filled-in soon.
+A complete description of the development process, along with examples for the module's usage will be published soon.
 
 Project folders:
 - cit-helper: a small library to hold custom functions used by other modules
