@@ -46,3 +46,5 @@ $ make
 $ netconfd --module $MODULENAME &
 
 (If you get an error during making, e.g. "xmlstring.h: No such file or directory" install the appropriate library, libxml2-dev in this case)
+Also, in order for the system commands to work properly, the sudoers file of the host system must be edited to allow execution of the relevant commands (iptables, reboot etc) by the user starting the NETCONF server (netconfd).
+
