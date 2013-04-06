@@ -34,7 +34,7 @@ module cit-iptables {
 
           container table {
             leaf table{
-              description "TODO -t";
+              description "Corresponds to iptables -t option.";
               type enumeration {
                 enum "filter" {
                   value 1;
@@ -52,7 +52,7 @@ module cit-iptables {
 
           container appendto {
             leaf appendto {
-              description "TODO -A";
+              description "Corresponds to iptables -A option.";
               type enumeration {
                 enum "PREROUTING" {
                   value 1;
@@ -75,7 +75,7 @@ module cit-iptables {
           }
 	  container protocol{
             leaf protocol {
-              description "TODO -p";
+              description "Corresponds to iptables -p option.";
               type enumeration {
                 enum "tcp" {
                   value 1;
@@ -148,7 +148,7 @@ module cit-iptables {
 
          container module {
            leaf module {
-             description "TODO. Corresponds to iptables -m option.";
+             description "Corresponds to iptables -m option.";
              type enumeration {
                enum "mark" {
                  value 1;
@@ -178,7 +178,7 @@ module cit-iptables {
 
          container connmark-options {
            leaf connmark-options {
-              description "TODO. ";
+              description "Corresponds to CONNMARK save-mark and restore-mark options.";
               type enumeration {
                 enum "save-mark" {
                   value 1;
@@ -219,7 +219,7 @@ module cit-iptables {
 
           container source-port {
             leaf port {
-              description "TODO --sport";
+              description "Corresponds to iptables --sport option.";
               type uint32;
             }
 	    leaf not {
@@ -231,7 +231,7 @@ module cit-iptables {
 
           container destination-port {
             leaf port {
-              description "TODO --dport";
+              description "Corresponds to iptables --dport option.";
               type uint32;
             }
 	    leaf not {
