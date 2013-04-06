@@ -6,3 +6,6 @@
 
 # Cit-helper's compiled executable used for tests
 cit-helper/testcit-helper
+
+# Helper header files from within each module (copied there during module compilation)
+cit-iptables/cit-iptables/src/cit-helper.h
