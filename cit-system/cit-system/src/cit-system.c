@@ -240,7 +240,7 @@ printf("**TRYING to get uid\n");
 printf("**UID: %i\n",getuid());
 printf("**EUID: %i\n",geteuid());
 
-setreuid(-1,0);
+setreuid(-1,0);  //Set Effective UserID to 0 (root). Leave Real UserID unchanged
 printf("**TRYING to get uid\n");
 printf("**UID: %i\n",getuid());
 printf("**EUID: %i\n",geteuid());
