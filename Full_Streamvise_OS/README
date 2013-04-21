@@ -1,0 +1,16 @@
+This is the image of the OS pulled from a working setup on 21-April-2013. It contains the latest versions of the following modules: cit-ifconfig, cit-system, cit-vrrp, cit-udhcpd, cit-iptables.
+
+Username: root
+Password: toor
+eth1 IP address: 192.168.1.24
+eth1 gateway: 192.168.1.1
+
+Image md5sum: 3cffc079e4c2e62e92b3c3dad38ce859
+
+Restore the image to a flash disk larger than 66MB using this command (MODIFIED ACCORDINGLY! BE CAREFUL!):
+# cat /tmp/streamviseOS.dd.gz | gzip -d | dd of=/dev/sdd1
+
+For the record, the image was taken from a CF card using this command:
+# dd if=/dev/sdd1 |gzip -c9 > /tmp/streamviseOS.dd.gz
+
+
