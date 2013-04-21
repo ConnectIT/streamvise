@@ -48,3 +48,13 @@ $ netconfd --module $MODULENAME &
 (If you get an error during making, e.g. "xmlstring.h: No such file or directory" install the appropriate library, libxml2-dev in this case)
 Also, in order for the system commands to work properly, the sudoers file of the host system must be edited to allow execution of the relevant commands (iptables, reboot etc) by the user starting the NETCONF server (netconfd).
 
+To build for a different device (referred to as "network device" here):
+1. use a testbed device/VM of the same architecture (32/64bit)
+2. install yuma on both
+3. build modules normally on the testbed
+4. copy the whole streamvise directory to the /tmp directory of the network device
+5. $ cd /tmp/streamvise
+6. set MODULENAME to the appropriate module, using the names above
+7. $ cp $MODULENAME/$MODULENAME/lib/lib$MODULENAME.so /usr/lib/yuma/lib$MODULENAME.so
+8. $ cp $MODULENAME/$MODULENAME.yang /usr/share/yuma/modules/$MODULENAME.yang
+9. Repeate steps 7 & 8 for all modules
