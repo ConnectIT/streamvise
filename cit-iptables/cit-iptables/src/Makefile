@@ -260,7 +260,7 @@ superclean:
 	$(LIB_INST)/lib$(SUBDIR_NM).*
 
 $(LIB_INST)/lib$(SUBDIR_NM).so: $(OBJS)
-	$(LINK) $(CFLAGS) $(LDFLAGS) -shared -rdynamic -Wl,-soname,lib$(SUBDIR_NM).so -o $@ $(OBJS) -L../lib -lmine
+	$(LINK) $(CFLAGS) $(LDFLAGS) -shared -rdynamic -Wl,-soname,lib$(SUBDIR_NM).so -o $@ $(OBJS) -L../lib -lcit-helper
 
 
 $(LBASE)/lib$(SUBDIR_NM).dylib: $(OBJS)
