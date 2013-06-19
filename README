@@ -1,8 +1,8 @@
-Open-source router operating system with stream manipulation and redundancy capabilities.
+Streamvise: Open-source router operating system with stream manipulation and redundancy capabilities.
 
-The OS will use NETCONF implementation "Yuma". For the moment, the only things in this repository will be some custom NETCONF modules developed by us.
+The OS uses NETCONF implementation "Yuma". This repository mainly hosts the custom NETCONF modules developed by us, and just a snapshot (image) of the whole OS.
 
-A complete description of the development process, along with examples for the module's usage will be published soon.
+A complete description of the development process, along with examples for the module's usage can be found in the Full Diploma Thesis text here: http://bit.ly/19j07un, and in the "extras" document found here: http://bit.ly/12bE8yX.
 
 Project folders:
 - cit-helper: a small library to hold custom functions used by other modules
