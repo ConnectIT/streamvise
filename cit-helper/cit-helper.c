@@ -57,7 +57,7 @@ char *readsetting(char *filename, char *setting, char *delimiter){
 	printf("Looking for string %s in file %s\n", setting, filename);
 	FILE *file;
 	FILE *filetmp;
-  size_t len = 0;
+	size_t len = 0;
 	char *line = NULL; //Will hold one line of the conf file
 	char *ret = "Setting not found";
 
@@ -104,14 +104,14 @@ int writesetting(char *filename, char *setting, char *towrite, char *delimiter){
 	printf("Will write string %s in file %s, as setting %s\n", towrite, filename, setting);
 	FILE *file;
 	FILE *filetmp;
-  size_t len = 0;
+	size_t len = 0;
 	char *line = NULL; //Will hold one line of the conf file
-  int foundflag = 0; //Flag: Did we find the setting we were looking for? NOT found by default
+	int foundflag = 0; //Flag: Did we find the setting we were looking for? NOT found by default
 
 
 	if (filetmp = fopen("/tmp/filetmp","w")) {
 	  if (file = fopen(filename,"r") ) { // Open the file	
-      printf("DBG: scanning through the lines\n");
+      	    printf("DBG: scanning through the lines\n");
 	    while ((getline(&line, &len, file)) != -1) { //Scan through the lines
 
 			  char tmp[100];	//TODO: maybe tmp should be defined as char *tmp[1] ???			
@@ -122,11 +122,11 @@ int writesetting(char *filename, char *setting, char *towrite, char *delimiter){
 			  //2. Try to find the string we're looking for. If not null, we found it!
 			  if (strstr(tmp, "#") == NULL && strstr(line, setting) != NULL){ 
   					foundflag = 2; //The setting has been found
-  		      printf("DBG: Setting found. Changing it\n");
-				  //Is this about a dns setting?
+  		          printf("DBG: Setting found. Changing it\n");
 
         /*	TODO: Uncomment the following, in order to enable smart searching and writing
 
+            //Is this about a dns setting?
             if (strstr(setting, "option  dns") != NULL) {
   				  printf("This is a dns request.");
 					
@@ -146,7 +146,7 @@ int writesetting(char *filename, char *setting, char *towrite, char *delimiter){
  	    //	}
 			  }else{ //This is not the line we were looking for. Rewrite it just to move the fprintf pointer.
 				  fprintf(filetmp, "%s", line);
-          printf("DBG: Not the line we're looking for. Rewriting it\n");
+			          printf("DBG: Not the line we're looking for. Rewriting it\n");
 			  }			
       }
 
@@ -240,13 +240,13 @@ int main(){
   printf("*** Cit-helper Test Function starts running ***\n");
 
   //Test write setting:
-  printf("Writing to uDHCPd config file...\n");
+	printf("Writing to uDHCPd config file...\n");
 	writeudhcpd("option  lease", "4230");
 	writeudhcpd("option  subnet", "4.5.5.11");
 	//Test read setting:
 	printf("Reading from uDHCPd config file...\nResult: %s\n", readudhcpd("option  lease"));
-  printf("Reading from uDHCPd config file...\nResult: %s\n", readudhcpd("option  subnet"));
-  printf("*** Cit-helper Test Function ends here ***\n");
+	printf("Reading from uDHCPd config file...\nResult: %s\n", readudhcpd("option  subnet"));
+	printf("*** Cit-helper Test Function ends here ***\n");
 	return 0;
 }
 #endif

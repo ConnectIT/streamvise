@@ -1553,83 +1553,9 @@ static status_t
         break;
     case AGT_CB_COMMIT:
 	{
-/* DELETE when new code works
-		printf("****    No of children: %i\n", val_child_cnt(newval));
 
-		val_value_t *tmpval; //Will hold the data node that we're processing each time
+/* CAUSES PROBLEMS DUE TO sprintf etc. Must be put in relevant lease_edit function and be tested.
 
-		// Is the service up or down?
-		tmpval = val_match_child(newval, "cit-udhcpd", "running"); //Find "running" in cit-udhpcd
-		if (tmpval != NULL) {
-			char cmd[512];
-			if (VAL_BOOL(tmpval)){ //Service should be running
-				printf("****    true\n"	); //TODO: change
-				sprintf(cmd, "sudo service udhcpd start");
-			}else{ //Service should NOT be running
-				printf("****    false\n"); //TODO: change
-				sprintf(cmd, "sudo service udhcpd stop");
-			}
-			int resultss = runsystem(cmd); //Send command for running
-		}
-
-
-		// Interface name
-		tmpval = val_match_child(newval, "cit-udhcpd", "interface"); //Find "interface" in cit-udhcpd
-		if (tmpval != NULL) {
-			char iface[] = "eth11"; //Dummy interface, just used for var init
-			sprintf(iface, "%s", VAL_STRING(tmpval)); //Get the value
-			printf("****    Iface name: %s\n", iface);
-		  writeudhcpd("interface", iface); //Write the setting to config file	
-		}
-
-		// Subnet mask
-		tmpval = val_match_child(newval, "cit-udhcpd", "subnet-mask"); //Find "subnet-mask" in cit-udhpd
-		if (tmpval != NULL) {		
-			writeudhcpd("option  subnet", VAL_STRING(tmpval)); //Write the setting to config file	
-		}
-
-		// Router IP
-		tmpval = val_match_child(newval, "cit-udhcpd", "router"); //Find "router" in cit-udhpd
-		if (tmpval != NULL) {	
-			writeudhcpd("option  router", VAL_STRING(tmpval)); //Write the setting to config file	
-		}
-
-
-		// DNS servers
-		val_value_t *tmpserver; //Will hold the "server" list
-		val_value_t *tmpchild; //Will hold server's children, ip-address leaf nodes
-		tmpval = val_match_child(newval, "cit-udhcpd", "dns"); //Find "dns" container in cit-udhpd
-		if (tmpval != NULL){
-			printf("****    Dns container found\n");
-
-			tmpserver = val_get_first_child(tmpval); //Get the first DNS server node
-			while (tmpserver != NULL){ //Check if there are still DNS IP addresses!
-				tmpchild = val_get_first_child(tmpserver); //Get the IP address
-				printf("****    DNS: %s\n", VAL_STRING(tmpchild));
-				writeudhcpd("option  dns", VAL_STRING(tmpchild)); //Write the setting to config file	
-				tmpserver = val_get_next_child(tmpserver); //Get the next DNS server
-			}
-
-		}
-
-		// Hostname
-		tmpval = val_match_child(newval, "cit-udhcpd", "hostname"); //Find "hostname" in cit-udhpd
-		if (tmpval != NULL) {	
-  		writeudhcpd("option  hostname", VAL_STRING(tmpval)); //Write the setting to config file	
-		}
-
-		// Lease time
-		tmpval = val_match_child(newval, "cit-udhcpd", "lease-time"); //Find "lease-time" in cit-udhpd
-		if (tmpval != NULL) {	
-
-		    char tmpint[]="3200"; //Temporary var to hold the lease time
-
-		    sprintf(tmpint, "%i", VAL_UINT(tmpval)); //Get the lease time
-  			writeudhcpd("option  lease", tmpint); //Write the setting to config file	
-		}
-*/
-
-/* CAUSES PROBLEMS DUE TO sprintf etc:
 		// Static leases
 		val_value_t *tmplease; //Will hold the "lease" list
 		char *MAC="FF:FF:FF:FF:FF:FF";
@@ -1654,25 +1580,6 @@ static status_t
 
 		}
 */
-
-/* DELETE when new code works
-		// Start IP
-		tmpval = val_match_child(newval, "cit-udhcpd", "range"); //Find "range" in cit-udhpd
-		if (tmpval != NULL) {	//Something has been found
-			tmpchild = val_get_first_child(tmpval); //Get the first child, AKA start address
-			if (tmpval != NULL) {	
-				printf("****    Start ip: %s\n", VAL_STRING(tmpchild));
-				writeudhcpd("start", VAL_STRING(tmpchild)); //Write the setting to config file	
-			}
-		// End IP
-			tmpchild = val_get_next_child(tmpchild); //Get the next child, AKA end address
-			if (tmpval != NULL) {	
-				printf("****    End ip: %s\n", VAL_STRING(tmpchild));
-				writeudhcpd("end", VAL_STRING(tmpchild)); //Write the setting to config file	
-			}
-		}
-*/
-
 
 	
 		switch (editop) {

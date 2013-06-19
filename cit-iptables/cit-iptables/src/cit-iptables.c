@@ -4119,7 +4119,7 @@ static status_t cit_iptables_iptables_rule_edit (
 			val_value_t *tmpleaf; //Will hold the data node that we're processing each time
 			strcat(cmd, "--to-destination ");
 			tmpleaf = val_get_first_child(tmpval);
-	printf("****    tmpleaf No of children: %i\n", val_child_cnt(tmpleaf));
+			printf("****    tmpleaf No of children: %i\n", val_child_cnt(tmpleaf));
 			if (val_child_cnt(tmpleaf) != 0) {
 				sprintf(tmpcmd, "%s", VAL_STRING(tmpleaf));
 			  	strcat(cmd,tmpcmd); //Append the new part to the command
@@ -4133,7 +4133,7 @@ static status_t cit_iptables_iptables_rule_edit (
 
 			}printf("bet iffsss\n");
 			tmpleaf = val_get_next_child(tmpleaf);
-printf("bet iffsss2\n");
+
 			if (tmpleaf != NULL)
 			if (val_child_cnt(tmpleaf) != 0) {
 				sprintf(tmpcmd, ":%i", VAL_INT(tmpleaf));
@@ -4151,8 +4151,8 @@ printf("bet iffsss2\n");
 
 
 
-		printf("****    Would run command: %s\n", cmd);
-//		runsystem(cmd); //Send command for running
+		printf("****    Running command: %s\n", cmd);
+		runsystem(cmd); //Send command for running
 
         	/* device instrumentation done here */
         	switch (editop) {

@@ -517,8 +517,7 @@ static status_t cit_vrrp_vrrp_rule_edit (
 		      }
 
 		      printf("****    Running command: %s\n", cmd);
-      		runsystem(cmd); //Send command for running
-
+		      runsystem(cmd); //Send command for running
 
         	switch (editop) {
         	case OP_EDITOP_LOAD:

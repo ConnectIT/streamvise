@@ -139,8 +139,8 @@ static status_t y_cit_system_system_reboot_invoke (
 
     /* invoke your device instrumentation code here */
 
-    printf("\n****    Would run command: sudo reboot\n");
-//  runsystem("sudo reboot"); //Send command for running
+    printf("\n****    Running command: sudo reboot\n");
+    runsystem("sudo reboot"); //Send command for running
 
     return res;
 
@@ -225,25 +225,14 @@ static status_t y_cit_system_get_live_conn_invoke (
 	int exitcounter=0;
 
 	FILE *file;
-/* TODO: cleanup this code..
-	while (exitcounter < 2)
-	{
-		if (file = fopen("/proc/net/ip_conntrack","r")){// Try to open the file
-			exitcounter=2; //If it works exit the loop
-		}else{
-			printf("Error opening file /proc/net/ip_conntrack! Trying to load ip_conntrack module...\n");
-			runsystem("sudo modprobe ip_conntrack");
-			exitcounter+=1;
-		}
-	}*/
-printf("**TRYING to get uid\n");
-printf("**UID: %i\n",getuid());
-printf("**EUID: %i\n",geteuid());
+	printf("**TRYING to get uid\n");
+	printf("**UID: %i\n",getuid());
+	printf("**EUID: %i\n",geteuid());
 
-setreuid(-1,0);  //Set Effective UserID to 0 (root). Leave Real UserID unchanged
-printf("**TRYING to get uid\n");
-printf("**UID: %i\n",getuid());
-printf("**EUID: %i\n",geteuid());
+	setreuid(-1,0);  //Set Effective UserID to 0 (root). Leave Real UserID unchanged
+	printf("**TRYING to get uid\n");
+	printf("**UID: %i\n",getuid());
+	printf("**EUID: %i\n",geteuid());
 
 	runsystem("sudo cat /proc/net/ip_conntrack > /tmp/conn"); //Copy conntrack as a superuser to a simple file
 
@@ -260,7 +249,6 @@ printf("**EUID: %i\n",geteuid());
 		printf("Error opening file /proc/net/ip_conntrack!\n");
 		sprintf(conn, "Error opening file /proc/net/ip_conntrack!");
 	}
-//        y_cit_system_live_conn_send (conn); //Send the connections text to the notification
     	return res;
 
 } /* y_cit_system_get_live_conn_invoke */
